@@ -2,7 +2,7 @@ NAME        =   rush00
 CC          =   clang++
 LIB			=	-lncurses
 CFLAGS      =   -Wall -Wextra -Werror
-SRC         =   main.cpp
+SRC         =   *.cpp
 
 all: rush00
 
