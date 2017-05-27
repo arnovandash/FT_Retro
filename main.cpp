@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/27 08:38:42 by arnovan-          #+#    #+#             */
-/*   Updated: 2017/05/27 12:38:09 by arnovan-         ###   ########.fr       */
+/*   Updated: 2017/05/27 13:04:15 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,17 @@ void shipInit() {
 	
 
 	std::cout << "Hey Bro, Welcome to our totally rad Game\n" << std::endl;
-	std::cout << "Choose your Ship Type: Fighter or Destroyer" <<std::endl;
+	std::cout << "Choose your Ship Type: (1)Fighter or (2)Destroyer" <<std::endl;
 	std::cin >> choice;
 
-	if (choice == "Fighter") {
+	if (choice == "Fighter" || choice == "1") {
 		std::cout << "Enter a name for your radical fighter: " << std::endl;
 		std::cin >> name;
+		if (name == " ")
+			name = "Deathbringer";
 		Fighter ship(name);
 	}
-	else if (choice == "Destroyer") {
+	else if (choice == "Destroyer" || choice == "2") {
 		std::cout << "Enter a name for your awesome destroyer: " << std::endl;
 		std::cin >> name;
 		Destroyer ship(name);
@@ -68,19 +70,19 @@ int main(void)
 		ch = getch();
 		switch (ch)
 		{
-			case KEY_UP:
-				std::cout << ch << std::endl;
+			case 'q':
 				endwin();
 				return (0);
 				break;
-			case KEY_DOWN:
-				std::cout << "Happy " << std::endl;
+			case KEY_UP: y--; break;
+			case KEY_DOWN: y++; break;
+			case KEY_LEFT: x--; break;
+			case KEY_RIGHT: x++; break;
 		}
 
 		//Start of render code
 		clear();
 		mvprintw(y, x, "o");
-		x++;
 
 		refresh();
 		usleep(20000);
