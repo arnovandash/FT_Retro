@@ -20,23 +20,7 @@
 #include "Fighter.hpp"
 #include "Destroyer.hpp"
 
-int main(void)
-{
-
-	initscr();
-	noecho();
-	cbreak();
-	keypad(stdscr, TRUE);
-	nodelay(stdscr, TRUE);
-	curs_set(FALSE);
-//From tutorial////////
-	int ch = 0; 
-	int x = 10, y = 10;
-	int max_x = 0, max_y = 0;
-	int next_x = 0;
-	int direction = 1;
-//////////////////////
-
+void shipInit() {
 
 	std:: string	choice;
 	std::string		name;
@@ -56,7 +40,27 @@ int main(void)
 		std::cin >> name;
 		Destroyer ship(name);
 	}
+}
 
+int main(void)
+{
+	shipInit();
+	
+	initscr();
+	noecho();
+	cbreak();
+	keypad(stdscr, TRUE);
+	nodelay(stdscr, TRUE);
+	curs_set(FALSE);
+//From tutorial////////
+	int ch = 0; 
+	int x = 10, y = 10;
+	int max_x = 0, max_y = 0;
+	int next_x = 0;
+	int direction = 1;
+//////////////////////
+
+	
 
 	std::cin.get();
 	while (1) // Main Gameloop
