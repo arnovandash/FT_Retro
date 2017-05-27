@@ -23,9 +23,9 @@ class Ship {
 		int				_fireDamage;
 		int				_hitPoints;
 		int 			_maxX;
-		int				_shipX;
+		int				_posX;
 		int				_maxY;
-		int				_shipY;
+		int				_posY;
 		std::string		_type;
 };
 

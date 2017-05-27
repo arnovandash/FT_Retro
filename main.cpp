@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/27 08:38:42 by arnovan-          #+#    #+#             */
-/*   Updated: 2017/05/27 13:44:24 by arnovan-         ###   ########.fr       */
+/*   Updated: 2017/05/27 14:20:55 by bsaunder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 #include "Ship.hpp"
 #include "Fighter.hpp"
 #include "Destroyer.hpp"
+#include "Projectile.hpp"
+
+
+
 /*
 void shipInit() {
 
@@ -69,6 +73,7 @@ int main(void)
 {
 
 	Fighter	fighter;
+	Projectile pew;
 
 	initscr();
 	noecho();
@@ -77,25 +82,14 @@ int main(void)
 	nodelay(stdscr, TRUE);
 	curs_set(FALSE);
 
-		//		refresh();
 //	shipInit();
-	//From tutorial////////
 	int ch = 0; 
-	int x = 0, y = 0;
 	int max_x = 0, max_y = 0;
-	int next_x = 0;
-	int direction = 1;
-	//////////////////////
-
 
 	getmaxyx(stdscr, max_y, max_x);
-	x = max_x / 2;
-	y = max_y - 1;
+	fighter._posX = max_x / 2;
+	fighter._posY = max_y - 1;
 
-	fighter._shipX = max_x / 2;
-	fighter._shipY = max_y - 1;
-
-//	std::cin.get();
 	while (1) // Main Gameloop
 	{
 		ch = getch();
@@ -106,17 +100,32 @@ int main(void)
 				return (0);
 				break;
 			case KEY_UP:
-			   if (fighter._shipY > 0)
-				   fighter._shipY--; break;
+			   if (fighter._posY > 0)
+				   fighter._posY--; break;
 			case KEY_DOWN: 
-			   if (fighter._shipY < max_y - 1)
-				   fighter._shipY++; break;
+			   if (fighter._posY < max_y - 1)
+				   fighter._posY++; break;
 			case KEY_LEFT:
-			   if (fighter._shipX > 0)
-				   fighter._shipX--; break;
+			   if (fighter._posX > 0)
+				   fighter._posX--; break;
 			case KEY_RIGHT:
-			   if (fighter._shipX < max_x - 1)
-				   fighter._shipX++; break;
+			   if (fighter._posX < max_x - 3)
+				   fighter._posX++; break;
+			case 'y':
+				Projectile pew;
+				pew._posX = fighter._posX;
+				pew._posY = fighter._posY;
+				
+				/*
+				while (pew._posY >= 0) 
+				{
+					clear();
+					mvprintw(pew._posY-2, pew._posX, "H");
+					usleep(10000);
+					pew._posY--;
+					refresh();
+				}
+				*/
 		}
 
 		//Start of render code
@@ -124,7 +133,8 @@ int main(void)
 		
 		std::string	type = fighter._type;
 		
-		mvprintw(fighter._shipY, fighter._shipX, "^T^");
+		mvprintw(fighter._posY, fighter._posX, "^T^");
+		
 
 		mvprintw(10, 10, "I");
 		refresh();
