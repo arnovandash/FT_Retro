@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/27 08:38:42 by arnovan-          #+#    #+#             */
-/*   Updated: 2017/05/27 13:28:56 by arnovan-         ###   ########.fr       */
+/*   Updated: 2017/05/27 13:44:24 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int main(void)
 	nodelay(stdscr, TRUE);
 	curs_set(FALSE);
 
-
+		//		refresh();
 //	shipInit();
 	//From tutorial////////
 	int ch = 0; 
@@ -98,17 +98,32 @@ int main(void)
 				endwin();
 				return (0);
 				break;
-			case KEY_UP: y--; break;
-			case KEY_DOWN: y++; break;
-			case KEY_LEFT: x--; break;
-			case KEY_RIGHT: x++; break;
+			case KEY_UP:
+			   if (y > 0)
+				   y--; break;
+			case KEY_DOWN: 
+			   if (y < max_y - 1)
+				   y++; break;
+			case KEY_LEFT:
+			   if (x > 0)
+				   x--; break;
+			case KEY_RIGHT:
+			   if (x < max_x - 1)
+				   x++; break;
 		}
 
 		//Start of render code
 		clear();
+		
+		
+		
 		mvprintw(y, x, "o");
 
+		mvprintw(10, 10, "I");
 		refresh();
+		
+		
+		
 		usleep(20000);
 		//end of renderer code
 
