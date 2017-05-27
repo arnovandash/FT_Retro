@@ -17,11 +17,16 @@ class Ship {
 		std::string		getName(void) const;
 		std::string		_name;
 
-	protected:
+	//protected:
 
 		int				_fireSpeed;
 		int				_fireDamage;
 		int				_hitPoints;
+		int 			_maxX;
+		int				_shipX;
+		int				_maxY;
+		int				_shipY;
+		std::string		_type;
 };
 
 #endif

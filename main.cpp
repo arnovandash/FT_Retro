@@ -67,6 +67,9 @@ void shipInit() {
 
 int main(void)
 {
+
+	Fighter	fighter;
+
 	initscr();
 	noecho();
 	cbreak();
@@ -88,6 +91,10 @@ int main(void)
 	getmaxyx(stdscr, max_y, max_x);
 	x = max_x / 2;
 	y = max_y - 1;
+
+	fighter._shipX = max_x / 2;
+	fighter._shipY = max_y - 1;
+
 //	std::cin.get();
 	while (1) // Main Gameloop
 	{
@@ -99,32 +106,32 @@ int main(void)
 				return (0);
 				break;
 			case KEY_UP:
-			   if (y > 0)
-				   y--; break;
+			   if (fighter._shipY > 0)
+				   fighter._shipY--; break;
 			case KEY_DOWN: 
-			   if (y < max_y - 1)
-				   y++; break;
+			   if (fighter._shipY < max_y - 1)
+				   fighter._shipY++; break;
 			case KEY_LEFT:
-			   if (x > 0)
-				   x--; break;
+			   if (fighter._shipX > 0)
+				   fighter._shipX--; break;
 			case KEY_RIGHT:
-			   if (x < max_x - 1)
-				   x++; break;
+			   if (fighter._shipX < max_x - 1)
+				   fighter._shipX++; break;
 		}
 
 		//Start of render code
 		clear();
 		
+		std::string	type = fighter._type;
 		
-		
-		mvprintw(y, x, "o");
+		mvprintw(fighter._shipY, fighter._shipX, "^T^");
 
 		mvprintw(10, 10, "I");
 		refresh();
 		
 		
 		
-		usleep(20000);
+		usleep(2000);
 		//end of renderer code
 
 	}

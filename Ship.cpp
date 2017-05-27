@@ -1,6 +1,6 @@
 #include "Ship.hpp"
 
-Ship::Ship(void) : _fireSpeed(0), _fireDamage(0), _hitPoints(0) {
+Ship::Ship(void) : _fireSpeed(0), _fireDamage(0), _hitPoints(0), _type("O") {
 
 	std::string name = "KIA";
 	setName(name);

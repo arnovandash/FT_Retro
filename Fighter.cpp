@@ -8,6 +8,7 @@ Fighter::Fighter(void) {
     _fireDamage = 5;
     _fireSpeed = 20;
     _hitPoints = 5;
+	_type = 'F';
 	
 	std::cout << "Fighter " << _name << " constructed" << std::endl;;
 	return ;
