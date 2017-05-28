@@ -218,6 +218,8 @@ void	Window::pewPew() {
 		}
 		getmaxyx(stdscr, maxY, maxX);
 		gettimeofday(&now, NULL);
+		if (this->starInit == false)
+			Window::starSpawn();
 		if (timediff(start, now) >= (1000000 / 24)) {
 			if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT)
 			{
