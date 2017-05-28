@@ -1,7 +1,7 @@
 CXX = clang++
 CXXFLAGS = -Wall -Werror -Wextra -g
 CXXXFLAGS = -Wall -Werror -Wextra -lncurses -g
-NAME = pewPew
+NAME = ft_retro
 
 SRC = src/Enemy.cpp src/Starfield.cpp src/Sprite.cpp src/Obstacle.cpp src/Projectile.cpp src/main.cpp src/Ship.cpp src/Window.cpp
 

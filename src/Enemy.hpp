@@ -16,6 +16,8 @@ public:
 	~Enemy();
 	
 	Enemy const &	operator=(Enemy const &);
+
+	bool 	impact(Sprite const & target);
 	bool	move( int );
 };
 

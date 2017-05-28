@@ -16,7 +16,6 @@
 #include "Starfield.hpp"
 #include <ncurses.h>
 #include <sys/time.h>
-#include <unistd.h>
 
 class Window {
 
@@ -34,11 +33,11 @@ public:
 
 private:
 
-	Sprite* 		sprites[100];
-	Sprite* 		projectiles[1000];
-	Sprite* 		starfield[10000];
-	Sprite* 		obstacles[10000];
-	Sprite* 		enemies[10000];
+	Sprite* 		sprites[1];
+	Sprite* 		projectiles[10];
+	Sprite* 		starfield[80];
+	Sprite* 		obstacles[20];
+	Sprite* 		enemies[20];
 	Ship			fighter;
 	bool			starInit;
 	int				keyPress;

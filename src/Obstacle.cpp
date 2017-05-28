@@ -4,11 +4,11 @@
 #include "Window.hpp"
 
 Obstacle::Obstacle( void ) : Sprite() {
-	_character = '*';
+	_character = '0';
 }
 
 Obstacle::Obstacle(int x, int y) : Sprite(x, y) {
-	_character = '*';
+	_character = '0';
 }
 
 Obstacle::Obstacle(Obstacle const & src) : Sprite(src.getX(), src.getY()) {

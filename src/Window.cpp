@@ -84,6 +84,7 @@ void    Window::starSpawn() {
 		for (i = 0; i < 80; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+				break;
 			}
 		}
 	}
@@ -104,22 +105,21 @@ void    Window::shoot(int y) {
 
 void    Window::movesprites(int const keyPress)
 {
-	starSpawn();
+//	starSpawn();
 	if (timeFrameCount % 6 == 0)
 		spawn();
 	fighter.move(keyPress, timeFrameCount);
 	if (keyPress == 32) {
 		shoot(fighter.getY());
 	}
-	for (int i = 0; i < 1; ++i) {
-		if (sprites[i]) {
-			if (!sprites[i]->move(timeFrameCount)) {
-				delete sprites[i];
-				sprites[i] = NULL;
-			}
-		}
-	}
-
+//	for (int i = 0; i < 80; ++i) {
+//		if (starfield[i]) {
+//			if (!starfield[i]->move(timeFrameCount)) {
+//				delete starfield[i];
+//				starfield[i] = NULL;
+//			}
+//		}
+//	}
 	for (int i = 0; i < 10; ++i) {
 		if (projectiles[i]) {
 			if (!projectiles[i]->move(timeFrameCount)) {
@@ -147,15 +147,16 @@ void    Window::movesprites(int const keyPress)
 			}
 		}
 	}
-
-	for (int i = 0; i < 1000; ++i) {
-		if (starfield[i]) {
-			if (!starfield[i]->move(timeFrameCount)) {
-				delete starfield[i];
-				starfield[i] = NULL;
+	for (int i = 0; i < 1; ++i) {
+		if (sprites[i]) {
+			if (!sprites[i]->move(timeFrameCount)) {
+				delete sprites[i];
+				sprites[i] = NULL;
 			}
 		}
 	}
+
+
 }
 
 void    Window::printScreen() {
@@ -181,10 +182,10 @@ void    Window::printScreen() {
 			enemies[i]->toPrint();  
 	}
 
-	for (int i = 0; i < 1000; ++i) {
-		if (starfield[i])
-			starfield[i]->toPrint();  
-	}
+//	for (int i = 0; i < 80; ++i) {
+//		if (starfield[i])
+//			starfield[i]->toPrint();  
+//	}
 }
 
 void    Window::createArray() {
@@ -228,77 +229,103 @@ void	Window::init() {
 
 int     Window::impact() {
     for (int j = 0; j < 10; ++j) {
+        for (int k = 0; (k < 10 && projectiles[j]) ; ++k) {
+            if (enemies[k] && projectiles[j]->impact(enemies[k])) {
+                delete projectiles[j];
+                projectiles[j] = NULL;
+				delete enemies[k];
+				enemies[k] = NULL;
+				score += 5;
+			}
+		}
+	}
+	for (int x = 0; x < 10; ++x) {
+		if (enemies[x] && fighter.impact(enemies[x])) {
+			if (lives == 0) {
+				delete enemies[x];
+				enemies[x] = NULL;
+				keyPress = 27;
+				return 0;
+			}
+			else {
+					lives--;
+					delete enemies[x];
+					enemies[x] = NULL;
+				}
+			}
+		}
+
+   for (int j = 0; j < 10; ++j) {
         for (int k = 0; (k < 20 && projectiles[j]) ; ++k) {
             if (obstacles[k] && projectiles[j]->impact(obstacles[k])) {
                 delete projectiles[j];
                 projectiles[j] = NULL;
-                delete obstacles[k];
-                obstacles[k] = NULL;
-                score += 5;
-            }
-        }
-    }
+				delete obstacles[k];
+				obstacles[k] = NULL;
+				score += 5;
+			}
+		}
+	}
 	for (int x = 0; x < 20; ++x) {
 		if (obstacles[x] && fighter.impact(obstacles[x])) {
-			if(lives > 0) {
-				lives--;
+			if (lives == 0) {
 				delete obstacles[x];
 				obstacles[x] = NULL;
-			}
-			else if (lives == 0) {
-				delete obstacles[x];
-				obstacles[x] = NULL;
-				
 				keyPress = 27;
 				return 0;
 			}
-		}
-	}
-    return (1);
-}
-
-
-unsigned int    Window::timediff(timeval t1, timeval t2) {
-
-	return ((t2.tv_sec * 1000000 + t2.tv_usec) - (t1.tv_sec * 1000000 + t1.tv_usec));
-}
-
-void	Window::pewPew() {
-
-	int maxX = 0, maxY = 0;
-	keyPress = getch();
-
-	while (keyPress != 27) {
-		keyPress = getch();
-		if (keyPress != ERR) {
-			prevKeyPress = keyPress;
-		}
-		getmaxyx(stdscr, maxY, maxX);
-		gettimeofday(&now, NULL);
-		if (this->starInit == false)
-			Window::starSpawn();
-		if (timediff(start, now) >= (1000000 / 24)) {
-			if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT) {
-				clear();
-				mvprintw(0,0, "Terminal window too small. Please resize!");
-				refresh();
-			}
-
 			else {
-
-				destroyWin();
-
-				printw("Score: %d\nLives: %d", score, lives);
-				createWin();
-				movesprites(prevKeyPress);
-				impact();
-				printScreen();
-
-				prevKeyPress = ERR;
-				start = now;
+					lives--;
+					delete obstacles[x];
+					obstacles[x] = NULL;
+				}
 			}
-			timeFrameCount++;
-			score++;
+		}
+		return (1);
+	}
+
+
+	unsigned int    Window::timediff(timeval t1, timeval t2) {
+
+		return ((t2.tv_sec * 1000000 + t2.tv_usec) - (t1.tv_sec * 1000000 + t1.tv_usec));
+	}
+
+	void	Window::pewPew() {
+
+		int maxX = 0, maxY = 0;
+		keyPress = getch();
+
+		while (keyPress != 27) {
+			keyPress = getch();
+			if (keyPress != ERR) {
+				prevKeyPress = keyPress;
+			}
+			getmaxyx(stdscr, maxY, maxX);
+			gettimeofday(&now, NULL);
+
+//			Potential bonus, Disabled due to flickering
+//			if (this->starInit == false)
+//				Window::starSpawn();
+
+			if (timediff(start, now) >= (1000000 / 30)) {
+				if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT) {
+					clear();
+					mvprintw(0,0, "Terminal window too small. Please resize!");
+					refresh();
+				}
+
+				else {
+					destroyWin();
+					printw("Score: %d\nLives remaining: %d", score, lives);
+					createWin();
+					movesprites(prevKeyPress);
+					impact();
+					printScreen();
+					prevKeyPress = ERR;
+					start = now;
+				}
+				timeFrameCount++;
+				score++;
+			}
 		}
 	}
-}

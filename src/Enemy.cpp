@@ -4,11 +4,11 @@
 #include "Window.hpp"
 
 Enemy::Enemy( void ) : Sprite() {
-	_character = '<';
+	_character = 'E';
 }
 
 Enemy::Enemy(int x, int y) : Sprite(x, y) {
-	_character = '<';
+	_character = 'E';
 }
 
 Enemy::Enemy(Enemy const & src) : Sprite(src.getX(), src.getY()) {
