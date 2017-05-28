@@ -6,11 +6,13 @@
 #include <sys/time.h>
 #include <cstdlib>
 
-Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), lives(5), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+
+Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), score(0), lives(5), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 }
 
-Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), lives(5), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), score(0), lives(5), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+
 	init();
 	*this = src;
 }
@@ -50,10 +52,20 @@ void    Window::spawn() {
 
 	for (i = 0; i < 20; i++) {
 		if(obstacles[i] == NULL) {
-			obstacles[i] = new Obstacle(WINWIDTH + 4, rand() % (WINHEIGHT - 2) + 6);
-			return;
+			obstacles[i] = new Obstacle(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+			break;
 		}
 	}
+	if (timeFrameCount % 15 == 0)
+	{
+		for (i = 0; i < 10; i++) {
+			if(enemies[i] == NULL) {
+				enemies[i] = new Enemy(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+				break;
+			}
+		}
+	}
+	return;
 }
 
 void    Window::starSpawn() {
@@ -63,7 +75,6 @@ void    Window::starSpawn() {
 		for (i = 0; i < 80; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(rand() % WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
-				return;
 			}
 		}
 		this->starInit = true;
@@ -73,10 +84,10 @@ void    Window::starSpawn() {
 		for (i = 0; i < 80; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
-				return;
 			}
 		}
 	}
+	return;
 }
 
 void    Window::shoot(int y) {
@@ -127,6 +138,16 @@ void    Window::movesprites(int const keyPress)
 		}
 	}
 
+
+	for (int i = 0; i < 10; ++i) {
+		if (enemies[i]) {
+			if (!enemies[i]->move(timeFrameCount)) {
+				delete enemies[i];
+				enemies[i] = NULL;
+			}
+		}
+	}
+
 	for (int i = 0; i < 1000; ++i) {
 		if (starfield[i]) {
 			if (!starfield[i]->move(timeFrameCount)) {
@@ -153,6 +174,11 @@ void    Window::printScreen() {
 	for (int i = 0; i < 20; ++i) {
 		if (obstacles[i])
 			obstacles[i]->toPrint();  
+	}
+
+	for (int i = 0; i < 10; ++i) {
+		if (enemies[i])
+			enemies[i]->toPrint();  
 	}
 
 	for (int i = 0; i < 1000; ++i) {
@@ -208,7 +234,7 @@ int     Window::impact() {
                 projectiles[j] = NULL;
                 delete obstacles[k];
                 obstacles[k] = NULL;
-                //score += 5;
+                score += 5;
             }
         }
     }
@@ -240,7 +266,6 @@ unsigned int    Window::timediff(timeval t1, timeval t2) {
 void	Window::pewPew() {
 
 	int maxX = 0, maxY = 0;
-	//score = 0; //wil come later
 	keyPress = getch();
 
 	while (keyPress != 27) {
@@ -258,8 +283,12 @@ void	Window::pewPew() {
 				mvprintw(0,0, "Terminal window too small. Please resize!");
 				refresh();
 			}
+
 			else {
+
 				destroyWin();
+
+				printw("Score: %d\nLives: %d", score, lives);
 				createWin();
 				movesprites(prevKeyPress);
 				impact();
@@ -269,6 +298,7 @@ void	Window::pewPew() {
 				start = now;
 			}
 			timeFrameCount++;
+			score++;
 		}
 	}
 }
