@@ -15,7 +15,7 @@ public:
 
 	~Projectile();
 	
-	using Sprite::operator=;
+	Projectile const &	operator=(Projectile const &);
 	bool	move( int );
 };
 

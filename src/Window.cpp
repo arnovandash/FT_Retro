@@ -45,12 +45,24 @@ void	Window::destroyWin() {
     delwin(newScr);
 }
 
+void    Window::spawn() {
+    int i;
+
+    for (i = 0; i < 1000; i++) {
+        if(obstacles[i] == NULL) {
+            obstacles[i] = new Obstacle(WINWIDTH + 4, rand() % (WINHEIGHT - 2) + 6);
+			return;
+        }
+    }
+}
+
 void    Window::shoot(int y) {
     int i;
     
     for (i = 0; i < 10; i++) {
         if(projectiles[i] == NULL) {
             projectiles[i] = new Projectile(WSTARTX + 6, y);
+
             return;
         }
     }
@@ -59,6 +71,7 @@ void    Window::shoot(int y) {
 void    Window::movesprites(int const keyPress)
 {
 
+	spawn();
     fighter.move(keyPress, timeFrameCount);
     if (keyPress == 32) {
         shoot(fighter.getY());
@@ -72,11 +85,20 @@ void    Window::movesprites(int const keyPress)
         }
     }
 
-    for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 10; ++i) {
         if (projectiles[i]) {
             if (!projectiles[i]->move(timeFrameCount)) {
                 delete projectiles[i];
                 projectiles[i] = NULL;
+            }
+        }
+    }
+   
+	for (int i = 0; i < 1000; ++i) {
+        if (obstacles[i]) {
+            if (!obstacles[i]->move(timeFrameCount)) {
+                delete obstacles[i];
+                obstacles[i] = NULL;
             }
         }
     }
@@ -89,9 +111,13 @@ void    Window::printScreen() {
         if (sprites[i])
             sprites[i]->toPrint();
     }
-    for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 10; ++i) {
       if (projectiles[i])
             projectiles[i]->toPrint();  
+    }
+   for (int i = 0; i < 1000; ++i) {
+      if (obstacles[i])
+            obstacles[i]->toPrint();  
     }
 }
 
@@ -141,26 +167,36 @@ unsigned int    Window::timediff(timeval t1, timeval t2) {
 
 void	Window::pewPew() {
 
+	int maxX = 0, maxY = 0;
     //score = 0;
     keyPress = getch();
 
     while (keyPress != 27) { //Not ESCKEY
         keyPress = getch();
-        if (keyPress != ERR) {
-            prevKeyPress = keyPress;
-        }
+		if (keyPress != ERR) {
+			prevKeyPress = keyPress;
+		}
+		getmaxyx(stdscr, maxY, maxX);
+		gettimeofday(&now, NULL);
+		if (timediff(start, now) >= (1000000 / 24)) {
+			if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT)
+			{
+				clear();
+				mvprintw(0,0, "Terminal window too small. Please resize!");
+				refresh();
+			}
+			else
+			{
+				// ncurses functions
+				destroyWin();
+				createWin();
+				movesprites(prevKeyPress);
+				printScreen();
 
-        gettimeofday(&now, NULL);      
-        if (timediff(start, now) >= (1000000 / 24)) {
-            // ncurses functions
-            destroyWin();
-            createWin();
-            movesprites(prevKeyPress);
-            printScreen();
-
-            prevKeyPress = ERR;
-            start = now;
-            timeFrameCount++;
-        }
-    }
+				prevKeyPress = ERR;
+				start = now;
+			}
+			timeFrameCount++;
+		}
+	}
 }

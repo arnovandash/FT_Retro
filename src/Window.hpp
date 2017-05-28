@@ -11,6 +11,7 @@
 #include "Sprite.hpp"
 #include "Ship.hpp"
 #include "Projectile.hpp"
+#include "Obstacle.hpp"
 #include <ncurses.h>
 #include <sys/time.h>
 
@@ -30,8 +31,9 @@ public:
 
 private:
 
-	Sprite* 		sprites[1];
-	Sprite* 		projectiles[10];
+	Sprite* 		sprites[10];
+	Sprite* 		projectiles[100];
+	Sprite* 		obstacles[10000];
 	Ship			fighter;
 	int				keyPress;
 	int				prevKeyPress;
@@ -50,6 +52,7 @@ private:
 	void	createArray2();
 	void	createProjectiles();
 	void	shoot(int y);
+	void	spawn(void);
 	void	movesprites(int const keyPress);
 	unsigned int 	timediff(timeval t1, timeval t2);
 };
