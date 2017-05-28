@@ -37,3 +37,7 @@ void	Sprite::toPrint() {
 	char	character[2] = {_character, 0};
 	mvprintw(this->_y, this->_x, character);
 }
+
+bool	Sprite::impact(Sprite*& target) {
+	return (_x >= target->getX() && _y == target->getY());
+}

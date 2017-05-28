@@ -43,6 +43,7 @@ private:
 	bool			starInit;
 	int				keyPress;
 	int				prevKeyPress;
+
 	unsigned int	score;
 	unsigned int	lives;
 	unsigned long	timeFrameCount;
@@ -63,6 +64,7 @@ private:
 	void	spawn(void);
 	void	starSpawn(void);
 	void	movesprites(int const keyPress);
+	int 	impact();
 	unsigned int 	timediff(timeval t1, timeval t2);
 };
 

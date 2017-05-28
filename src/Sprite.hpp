@@ -15,12 +15,13 @@ public:
 	
 	Sprite const &	operator=(Sprite const & rdh);
 	virtual bool	move( int ) = 0;
+	bool 	impact(Sprite*&);
 
 	virtual void toPrint();
 	int		getX( void ) const ;
 	int		getY( void ) const ;
 
-protected:
+
 	int _x;
 	int _y;
 	char _character;
