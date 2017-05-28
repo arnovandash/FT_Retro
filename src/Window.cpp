@@ -50,10 +50,20 @@ void    Window::spawn() {
 
 	for (i = 0; i < 20; i++) {
 		if(obstacles[i] == NULL) {
-			obstacles[i] = new Obstacle(WINWIDTH + 4, rand() % (WINHEIGHT - 2) + 6);
-			return;
+			obstacles[i] = new Obstacle(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+			break;
 		}
 	}
+	if (timeFrameCount % 15 == 0)
+	{
+		for (i = 0; i < 10; i++) {
+			if(enemies[i] == NULL) {
+				enemies[i] = new Enemy(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+				break;
+			}
+		}
+	}
+	return;
 }
 
 void    Window::starSpawn() {
@@ -63,7 +73,6 @@ void    Window::starSpawn() {
 		for (i = 0; i < 80; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(rand() % WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
-				return;
 			}
 		}
 		this->starInit = true;
@@ -73,10 +82,10 @@ void    Window::starSpawn() {
 		for (i = 0; i < 80; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
-				return;
 			}
 		}
 	}
+	return;
 }
 
 void    Window::shoot(int y) {
@@ -127,6 +136,16 @@ void    Window::movesprites(int const keyPress)
 		}
 	}
 
+
+	for (int i = 0; i < 10; ++i) {
+		if (enemies[i]) {
+			if (!enemies[i]->move(timeFrameCount)) {
+				delete enemies[i];
+				enemies[i] = NULL;
+			}
+		}
+	}
+
 	for (int i = 0; i < 1000; ++i) {
 		if (starfield[i]) {
 			if (!starfield[i]->move(timeFrameCount)) {
@@ -153,6 +172,11 @@ void    Window::printScreen() {
 	for (int i = 0; i < 20; ++i) {
 		if (obstacles[i])
 			obstacles[i]->toPrint();  
+	}
+
+	for (int i = 0; i < 10; ++i) {
+		if (enemies[i])
+			enemies[i]->toPrint();  
 	}
 
 	for (int i = 0; i < 1000; ++i) {
@@ -229,8 +253,9 @@ void	Window::pewPew() {
 			}
 			else
 			{
-				// ncurses functions
+				// ncurses functions				
 				destroyWin();
+
 				createWin();
 				movesprites(prevKeyPress);
 				printScreen();

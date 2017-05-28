@@ -11,10 +11,12 @@
 #include "Sprite.hpp"
 #include "Ship.hpp"
 #include "Projectile.hpp"
+#include "Enemy.hpp"
 #include "Obstacle.hpp"
 #include "Starfield.hpp"
 #include <ncurses.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 class Window {
 
@@ -36,6 +38,7 @@ private:
 	Sprite* 		projectiles[1000];
 	Sprite* 		starfield[10000];
 	Sprite* 		obstacles[10000];
+	Sprite* 		enemies[10000];
 	Ship			fighter;
 	bool			starInit;
 	int				keyPress;
