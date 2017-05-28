@@ -19,7 +19,7 @@ public:
 	Ship const &	operator=(Ship const &);;
 	bool	move( int );
 	void	move( int const, int const);
-	char 	getForm();
+	//char 	getCharacter();
 
 };
 

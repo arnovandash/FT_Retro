@@ -6,11 +6,11 @@
 #include <sys/time.h>
 #include <cstdlib>
 
-Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), lives(5), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 }
 
-Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), lives(5), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 	*this = src;
 }
@@ -200,6 +200,38 @@ void	Window::init() {
 	printScreen();
 }
 
+int     Window::impact() {
+    for (int j = 0; j < 10; ++j) {
+        for (int k = 0; (k < 20 && projectiles[j]) ; ++k) {
+            if (obstacles[k] && projectiles[j]->impact(obstacles[k])) {
+                delete projectiles[j];
+                projectiles[j] = NULL;
+                delete obstacles[k];
+                obstacles[k] = NULL;
+                //score += 5;
+            }
+        }
+    }
+	for (int x = 0; x < 20; ++x) {
+		if (obstacles[x] && fighter.impact(obstacles[x])) {
+			if(lives > 0) {
+				lives--;
+				delete obstacles[x];
+				obstacles[x] = NULL;
+			}
+			else if (lives == 0) {
+				delete obstacles[x];
+				obstacles[x] = NULL;
+				
+				keyPress = 27;
+				return 0;
+			}
+		}
+	}
+    return (1);
+}
+
+
 unsigned int    Window::timediff(timeval t1, timeval t2) {
 
 	return ((t2.tv_sec * 1000000 + t2.tv_usec) - (t1.tv_sec * 1000000 + t1.tv_usec));
@@ -208,10 +240,10 @@ unsigned int    Window::timediff(timeval t1, timeval t2) {
 void	Window::pewPew() {
 
 	int maxX = 0, maxY = 0;
-	//score = 0;
+	//score = 0; //wil come later
 	keyPress = getch();
 
-	while (keyPress != 27) { //Not ESCKEY
+	while (keyPress != 27) {
 		keyPress = getch();
 		if (keyPress != ERR) {
 			prevKeyPress = keyPress;
@@ -221,18 +253,16 @@ void	Window::pewPew() {
 		if (this->starInit == false)
 			Window::starSpawn();
 		if (timediff(start, now) >= (1000000 / 24)) {
-			if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT)
-			{
+			if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT) {
 				clear();
 				mvprintw(0,0, "Terminal window too small. Please resize!");
 				refresh();
 			}
-			else
-			{
-				// ncurses functions
+			else {
 				destroyWin();
 				createWin();
 				movesprites(prevKeyPress);
+				impact();
 				printScreen();
 
 				prevKeyPress = ERR;

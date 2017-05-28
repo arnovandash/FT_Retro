@@ -16,6 +16,8 @@ public:
 	~Projectile();
 	
 	Projectile const &	operator=(Projectile const &);
+
+	bool 	impact(Sprite const & target);
 	bool	move( int );
 };
 
