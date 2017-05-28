@@ -1,52 +1,35 @@
+
+
 #include "Ship.hpp"
+#include "Window.hpp"
+#include <ncurses.h>
 
-Ship::Ship(void) : _fireSpeed(0), _fireDamage(0), _hitPoints(0), _type("O") {
-
-	std::string name = "KIA";
-	setName(name);
-	
-	return ;
+Ship::Ship( void ) : Sprite(){
+	_character = '>';
 }
 
-Ship::Ship(std::string const name) : _fireSpeed(0), _fireDamage(0), _hitPoints(0) {
-
-	setName(name);
-
-	return ;
+Ship::Ship(int x, int y) : Sprite(x, y){
+	_character = '>';
 }
 
-Ship::Ship(Ship const & src) {
-
-	*this = src;
-	return ;
+Ship::Ship(Ship const & src) : Sprite(src.getX(), src.getY()){
 }
 
-Ship::~Ship(void) {
 
-	return ;
+Ship::~Ship( void ) {
 }
 
-void		Ship::setName(std::string const name) {
-
-	this->_name = name;
-	return ;
+bool 	Ship::move( int timeFrameCount) {
+	if (timeFrameCount == 0)
+		return 1;
+	return 0;
 }
 
-std::string		Ship::getName(void) const {
-
-	return(this->_name);
-}
-
-Ship & Ship::operator=(Ship const & src) {
-
-	std::cout << "Assigning " << src.getName() << "'s values to ship" << std::endl;
-
-	_name = src.getName();
-	_fireSpeed = src._fireSpeed;
-	_fireDamage = src._fireDamage;
-	_hitPoints = src._hitPoints;
-
-	std::cout << "Done...." << std::endl;
-	
-	return *this;
+void 	Ship::move( int const keyPress, int timeFrameCount) {
+	if (timeFrameCount){
+		if (keyPress == KEY_UP && _y > (SHIPY + 1))
+			_y--;
+		else if (keyPress == KEY_DOWN && _y < (SHIPY + WINHEIGHT - 2))
+			_y++;
+	}
 }

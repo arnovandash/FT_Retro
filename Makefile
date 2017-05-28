@@ -1,19 +1,24 @@
-NAME        =   rush00
-CC          =   clang++
-LIB			=	-lncurses
-CFLAGS      =   -Wall -Wextra -Werror
-SRC         =   src/*.cpp
+CXX = clang++
+CXXFLAGS = -Wall -Werror -Wextra
+CXXXFLAGS = -Wall -Werror -Wextra -lncurses
+NAME = pewPew
 
-all: rush00
+SRC = src/Sprite.cpp src/Projectile.cpp src/main.cpp src/Ship.cpp src/Window.cpp
 
-rush00:
-	    @$(CC) $(SRC) -o $(NAME) $(LIB)
+OBJ = $(SRC:.cpp=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CXX) $(CXXXFLAGS) -o $(NAME) $(OBJ)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 clean:
-	    @echo "\033[92m    Nothing to clean\033[0m"
+	rm -rf $(OBJ)
 
 fclean: clean
-	    @echo "\033[92m    RM    $(NAME)\033[0m"
-		    @rm -f $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all

@@ -1,20 +1,22 @@
-#ifndef PROJECTILE_HPP
-# define PROJECTILE_HPP
 
-#include "Ship.hpp"
-#include "Fighter.hpp"
 
-class Projectile : public Fighter {
+#include <iostream>
+#include "Sprite.hpp"
 
-	public:
+#ifndef Projectile_HPP
+ #define Projectile_HPP
 
-		Projectile(void);
-		~Projectile(void);
-		Projectile(Ship const & src);
+class Projectile : public Sprite {
 
-		int 	_posX;
-		int		_posY;
-		bool	_fired;
-};
+public:
+	Projectile(void);
+	Projectile(int x, int y);
+	Projectile(Projectile const & src);
+
+	~Projectile();
 	
+	using Sprite::operator=;
+	bool	move( int );
+};
+
 #endif

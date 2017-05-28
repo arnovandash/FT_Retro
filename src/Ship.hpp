@@ -1,32 +1,26 @@
+
+
+#include <iostream>
+#include "Sprite.hpp"
+
 #ifndef SHIP_HPP
 # define SHIP_HPP
 
-# include <iostream>
 
-class Ship {
+class Ship : public Sprite
+{
+public:
+	Ship(void);
+	Ship(int x, int y);
+	Ship(Ship const & src);
 
-	public:
-		Ship(void);
-		Ship(std::string const name);
-		Ship(Ship const & src);
-		~Ship(void);
+	~Ship();
 
-		Ship &	operator=(Ship const &);
-		
-		void			setName(std:: string const name);
-		std::string		getName(void) const;
-		std::string		_name;
+	using Sprite::operator=;
+	bool	move( int );
+	void	move( int const, int const);
+	char 	getForm();
 
-	//protected:
-
-		int				_fireSpeed;
-		int				_fireDamage;
-		int				_hitPoints;
-		int 			_maxX;
-		int				_posX;
-		int				_maxY;
-		int				_posY;
-		std::string		_type;
 };
 
 #endif

@@ -1,20 +1,27 @@
+
+
 #include "Projectile.hpp"
-#include "Ship.hpp"
+#include "Window.hpp"
 
-Projectile::Projectile(void) : _fired(false){
-
-	return ;
+Projectile::Projectile( void ) : Sprite() {
+	_character = '~';
 }
 
-Projectile::~Projectile(void) {
-
-	return ;
+Projectile::Projectile(int x, int y) : Sprite(x, y) {
+	_character = '~';
 }
 
-Projectile::Projectile(Ship const & src) {
-	
-	*this = src;
-	this->_fired = true;
-	return ;
+Projectile::Projectile(Projectile const & src) : Sprite(src.getX(), src.getY()) {
 }
 
+Projectile::~Projectile( void ) {
+}
+
+bool 	Projectile::move( int timeFrameCount) {
+	if (_x > WINWIDTH + SHIPX - 3)
+			return FALSE;
+	if (timeFrameCount % 1 == 0){
+		_x++;
+	} 
+	return TRUE;
+}
