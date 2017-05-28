@@ -6,11 +6,11 @@
 #include <sys/time.h>
 #include <cstdlib>
 
-Window::Window(): fighter(Ship()), keyPress(ERR), prevKeyPress(ERR), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 }
 
-Window::Window(Window const & src): fighter(Ship()), keyPress(ERR), prevKeyPress(ERR), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 	*this = src;
 }
@@ -46,133 +46,173 @@ void	Window::destroyWin() {
 }
 
 void    Window::spawn() {
-    int i;
+	int i;
 
-    for (i = 0; i < 1000; i++) {
-        if(obstacles[i] == NULL) {
-            obstacles[i] = new Obstacle(WINWIDTH + 4, rand() % (WINHEIGHT - 2) + 6);
+	for (i = 0; i < 20; i++) {
+		if(obstacles[i] == NULL) {
+			obstacles[i] = new Obstacle(WINWIDTH + 4, rand() % (WINHEIGHT - 2) + 6);
 			return;
-        }
-    }
+		}
+	}
+}
+
+void    Window::starSpawn() {
+	int i;
+	if (this->starInit == false)
+	{
+		for (i = 0; i < 80; i++) {
+			if(starfield[i] == NULL) {
+				starfield[i] = new Starfield(rand() % WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+				return;
+			}
+		}
+		this->starInit = true;
+	}
+	else
+	{
+		for (i = 0; i < 80; i++) {
+			if(starfield[i] == NULL) {
+				starfield[i] = new Starfield(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
+				return;
+			}
+		}
+	}
 }
 
 void    Window::shoot(int y) {
-    int i;
-    
-    for (i = 0; i < 10; i++) {
-        if(projectiles[i] == NULL) {
-            projectiles[i] = new Projectile(WSTARTX + 6, y);
+	int i;
 
-            return;
-        }
-    }
+	for (i = 0; i < 10; i++) {
+		if(projectiles[i] == NULL) {
+			projectiles[i] = new Projectile(WSTARTX + 6, y);
+
+			return;
+		}
+	}
 }
 
 void    Window::movesprites(int const keyPress)
 {
-
-	spawn();
-    fighter.move(keyPress, timeFrameCount);
-    if (keyPress == 32) {
-        shoot(fighter.getY());
-    }
-    for (int i = 0; i < 1; ++i) {
-        if (sprites[i]) {
-            if (!sprites[i]->move(timeFrameCount)) {
-                delete sprites[i];
-                sprites[i] = NULL;
-            }
-        }
-    }
+	starSpawn();
+	if (timeFrameCount % 6 == 0)
+		spawn();
+	fighter.move(keyPress, timeFrameCount);
+	if (keyPress == 32) {
+		shoot(fighter.getY());
+	}
+	for (int i = 0; i < 1; ++i) {
+		if (sprites[i]) {
+			if (!sprites[i]->move(timeFrameCount)) {
+				delete sprites[i];
+				sprites[i] = NULL;
+			}
+		}
+	}
 
 	for (int i = 0; i < 10; ++i) {
-        if (projectiles[i]) {
-            if (!projectiles[i]->move(timeFrameCount)) {
-                delete projectiles[i];
-                projectiles[i] = NULL;
-            }
-        }
-    }
-   
+		if (projectiles[i]) {
+			if (!projectiles[i]->move(timeFrameCount)) {
+				delete projectiles[i];
+				projectiles[i] = NULL;
+			}
+		}
+	}
+
+	for (int i = 0; i < 20; ++i) {
+		if (obstacles[i]) {
+			if (!obstacles[i]->move(timeFrameCount)) {
+				delete obstacles[i];
+				obstacles[i] = NULL;
+			}
+		}
+	}
+
 	for (int i = 0; i < 1000; ++i) {
-        if (obstacles[i]) {
-            if (!obstacles[i]->move(timeFrameCount)) {
-                delete obstacles[i];
-                obstacles[i] = NULL;
-            }
-        }
-    }
+		if (starfield[i]) {
+			if (!starfield[i]->move(timeFrameCount)) {
+				delete starfield[i];
+				starfield[i] = NULL;
+			}
+		}
+	}
 }
 
 void    Window::printScreen() {
 
-    fighter.toPrint();
-    for (int i = 0; i < 1; ++i) {
-        if (sprites[i])
-            sprites[i]->toPrint();
-    }
+	fighter.toPrint();
+	for (int i = 0; i < 1; ++i) {
+		if (sprites[i])
+			sprites[i]->toPrint();
+	}
+
 	for (int i = 0; i < 10; ++i) {
-      if (projectiles[i])
-            projectiles[i]->toPrint();  
-    }
-   for (int i = 0; i < 1000; ++i) {
-      if (obstacles[i])
-            obstacles[i]->toPrint();  
-    }
+		if (projectiles[i])
+			projectiles[i]->toPrint();  
+	}
+
+	for (int i = 0; i < 20; ++i) {
+		if (obstacles[i])
+			obstacles[i]->toPrint();  
+	}
+
+	for (int i = 0; i < 1000; ++i) {
+		if (starfield[i])
+			starfield[i]->toPrint();  
+	}
 }
 
 void    Window::createArray() {
 
-    for (int i = 0; i < 1; ++i) {
-        if (sprites[i])
-            sprites[i] = NULL;
-    }
+	for (int i = 0; i < 1; ++i) {
+		if (sprites[i])
+			sprites[i] = NULL;
+	}
 }
 
 void    Window::createProjectiles() {
 
-    for (int i = 0; i < 10; ++i)
-        sprites[i] = new Projectile();
+	for (int i = 0; i < 10; ++i)
+		sprites[i] = new Projectile();
 }
 
 void    Window::createArray2() {
-    for (int i = 0; i < 10; ++i) {
-        if (projectiles[i])
-            projectiles[i] = NULL;
-    }
+	for (int i = 0; i < 10; ++i) {
+		if (projectiles[i])
+			projectiles[i] = NULL;
+	}
 }
 
 void	Window::init() {
 
-    createArray();
+	createArray();
 	initscr();
-    createArray2();
+	createArray2();
 
-    noecho();
-    curs_set(false);
-    timeout(0);
-    cbreak();
-    keypad(stdscr, true);
+	noecho();
+	curs_set(false);
+	timeout(0);
+	cbreak();
+	keypad(stdscr, true);
 
-    gettimeofday(&start, NULL);
-    refresh();
-    createWin();
-    printScreen();
+	gettimeofday(&start, NULL);
+	refresh();
+	createWin();
+	printScreen();
 }
 
 unsigned int    Window::timediff(timeval t1, timeval t2) {
 
-    return ((t2.tv_sec * 1000000 + t2.tv_usec) - (t1.tv_sec * 1000000 + t1.tv_usec));
+	return ((t2.tv_sec * 1000000 + t2.tv_usec) - (t1.tv_sec * 1000000 + t1.tv_usec));
 }
 
 void	Window::pewPew() {
 
 	int maxX = 0, maxY = 0;
-    //score = 0;
-    keyPress = getch();
+	//score = 0;
+	keyPress = getch();
 
-    while (keyPress != 27) { //Not ESCKEY
-        keyPress = getch();
+	while (keyPress != 27) { //Not ESCKEY
+		keyPress = getch();
 		if (keyPress != ERR) {
 			prevKeyPress = keyPress;
 		}

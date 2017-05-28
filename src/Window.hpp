@@ -12,6 +12,7 @@
 #include "Ship.hpp"
 #include "Projectile.hpp"
 #include "Obstacle.hpp"
+#include "Starfield.hpp"
 #include <ncurses.h>
 #include <sys/time.h>
 
@@ -31,10 +32,12 @@ public:
 
 private:
 
-	Sprite* 		sprites[10];
-	Sprite* 		projectiles[100];
+	Sprite* 		sprites[100];
+	Sprite* 		projectiles[1000];
+	Sprite* 		starfield[10000];
 	Sprite* 		obstacles[10000];
 	Ship			fighter;
+	bool			starInit;
 	int				keyPress;
 	int				prevKeyPress;
 	unsigned long	timeFrameCount;
@@ -53,6 +56,7 @@ private:
 	void	createProjectiles();
 	void	shoot(int y);
 	void	spawn(void);
+	void	starSpawn(void);
 	void	movesprites(int const keyPress);
 	unsigned int 	timediff(timeval t1, timeval t2);
 };
