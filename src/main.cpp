@@ -6,7 +6,7 @@
 /*   By: arnovan- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/27 08:38:42 by arnovan-          #+#    #+#             */
-/*   Updated: 2017/05/27 14:20:55 by bsaunder         ###   ########.fr       */
+/*   Updated: 2017/05/28 09:20:42 by arnovan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,54 +20,6 @@
 #include "Fighter.hpp"
 #include "Destroyer.hpp"
 #include "Projectile.hpp"
-
-
-
-/*
-void shipInit() {
-
-	std::string		choice;
-	std::string		name;
-	int ch = ;
-
-	clear();
-	mvprintw(0, 0, "Choose your Ship Type: (1)Fighter or (2)Destroyer");
-
-	refresh();
-	if (ch != 1)
-	{
-		ch = getch();
-		switch (ch)
-		{
-			case '1':
-				clear();
-				mvprintw(0, 0, "selected 1");
-				break;
-			case '2':
-				clear();
-				mvprintw(0, 0, "selected 2");
-				break;
-		}
-	}
-	*/
-	/*	
-
-		std::cout << "Hey Bro, Welcome to our totally rad Game\n" << std::endl;
-		std::cout << "Choose your Ship Type: (1)Fighter or (2)Destroyer" <<std::endl;
-		std::cin >> choice;
-
-		if (choice == "Fighter" || choice == "1") {
-		std::cout << "Enter a name for your radical fighter: " << std::endl;
-		std::cin >> name;
-		Fighter ship(name);
-		}
-		else if (choice == "Destroyer" || choice == "2") {
-		std::cout << "Enter a name for your awesome destroyer: " << std::endl;
-		std::cin >> name;
-		Destroyer ship(name);
-		}
-		*/
-//}
 
 int main(void)
 {
@@ -133,7 +85,9 @@ int main(void)
 		
 		std::string	type = fighter._type;
 		
-		mvprintw(fighter._posY, fighter._posX, "^T^");
+		mvprintw(fighter._posY - 1, fighter._posX, ">>");
+		mvprintw(fighter._posY, fighter._posX, "##D");
+		mvprintw(fighter._posY + 1, fighter._posX, ">>");
 		
 
 		mvprintw(10, 10, "I");
@@ -149,3 +103,54 @@ int main(void)
 	endwin();
 	return (0);
 }
+
+
+////////////////////MAIN MENU///////////////////////////
+
+/*
+void shipInit() {
+
+	std::string		choice;
+	std::string		name;
+	int ch = ;
+
+	clear();
+	mvprintw(0, 0, "Choose your Ship Type: (1)Fighter or (2)Destroyer");
+
+	refresh();
+	if (ch != 1)
+	{
+		ch = getch();
+		switch (ch)
+		{
+			case '1':
+				clear();
+				mvprintw(0, 0, "selected 1");
+				break;
+			case '2':
+				clear();
+				mvprintw(0, 0, "selected 2");
+				break;
+		}
+	}
+	*/
+	/*	
+
+		std::cout << "Hey Bro, Welcome to our totally rad Game\n" << std::endl;
+		std::cout << "Choose your Ship Type: (1)Fighter or (2)Destroyer" <<std::endl;
+		std::cin >> choice;
+
+		if (choice == "Fighter" || choice == "1") {
+		std::cout << "Enter a name for your radical fighter: " << std::endl;
+		std::cin >> name;
+		Fighter ship(name);
+		}
+		else if (choice == "Destroyer" || choice == "2") {
+		std::cout << "Enter a name for your awesome destroyer: " << std::endl;
+		std::cin >> name;
+		Destroyer ship(name);
+		}
+		*/
+//}
+
+

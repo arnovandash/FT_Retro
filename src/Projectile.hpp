@@ -14,6 +14,7 @@ class Projectile : public Fighter {
 
 		int 	_posX;
 		int		_posY;
+		bool	_fired;
 };
 	
 #endif
