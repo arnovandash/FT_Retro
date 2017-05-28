@@ -6,11 +6,11 @@
 #include <sys/time.h>
 #include <cstdlib>
 
-Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), score(0), lives(5), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 }
 
-Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), score(0), lives(5), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	init();
 	*this = src;
 }
@@ -256,6 +256,7 @@ void	Window::pewPew() {
 				// ncurses functions				
 				destroyWin();
 
+				printw("Score: %d\nLives: %d", score, lives);
 				createWin();
 				movesprites(prevKeyPress);
 				printScreen();
@@ -264,6 +265,7 @@ void	Window::pewPew() {
 				start = now;
 			}
 			timeFrameCount++;
+			score++;
 		}
 	}
 }

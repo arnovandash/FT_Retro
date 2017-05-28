@@ -43,6 +43,8 @@ private:
 	bool			starInit;
 	int				keyPress;
 	int				prevKeyPress;
+	unsigned int	score;
+	unsigned int	lives;
 	unsigned long	timeFrameCount;
 	struct timeval	start;
 	struct timeval	now;
