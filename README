@@ -1,3 +1,19 @@
 C++ RUSH00 in Ncurses by bsaunder and arnovan-
 *Had working starfield but disabled for correction
 *Running at 30FPS
+
+Features:
+Single-player
+Display using the ncurses library
+Horizontal or vertical scrolling (The screen area moves through the world, very much like in R-Type for example)
+Random enemies
+The player can shoot at enemies
+Basic collision handling (If an enemy touches you, you die)
+Game entities occupy one ’square’ of the map only.
+Frame-based timing
+
+Bonus Features:
+Displaying score, time, number of lives, etc... on screen
+Clock-based timing (Use whichever system facility or library you like)
+Scenery (Collidable objects or simple background)
+Enemies have a scripted behaviour

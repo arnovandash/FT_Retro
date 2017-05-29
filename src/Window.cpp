@@ -20,7 +20,7 @@ Window::Window(Window const & src): fighter(Ship()), starInit(false), keyPress(E
 Window::~Window() {
 	destroyWin();
     endwin();
-    std::cout << "You Died, Bummer Dude" << std::endl;
+    std::cout << "You Died, Bummer Dude.. Your final score: " << score << std::endl;
 }
 
 Window const &	Window::operator=(Window const & rhs) {
@@ -215,6 +215,11 @@ void	Window::init() {
 	initscr();
 	createArray2();
 
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_BLACK);
+	init_pair(3, COLOR_CYAN, COLOR_BLACK);
+	
 	noecho();
 	curs_set(false);
 	timeout(0);
@@ -310,13 +315,13 @@ int     Window::impact() {
 			if (timediff(start, now) >= (1000000 / 30)) {
 				if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT) {
 					clear();
-					mvprintw(0,0, "Terminal window too small. Please resize!");
+					mvprintw(0,0, "GAME PAUSED!\nTerminal window too small. Please resize!");
 					refresh();
 				}
 
 				else {
 					destroyWin();
-					printw("Score: %d\nLives remaining: %d", score, lives);
+					printw("Score: %d\nLives remaining: %d\nTime: %d", score, lives, timeFrameCount/30);
 					createWin();
 					movesprites(prevKeyPress);
 					impact();

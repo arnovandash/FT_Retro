@@ -35,7 +35,16 @@ int		Sprite::getY( void ) const {
 
 void	Sprite::toPrint() {
 	char	character[2] = {_character, 0};
+	if (character[0] == '0')
+		attron(COLOR_PAIR(1));
+	if (character[0] == 'E')
+		attron(COLOR_PAIR(2));
+	if (character[0] == '~')
+		attron(COLOR_PAIR(3));
 	mvprintw(this->_y, this->_x, character);
+	attroff(COLOR_PAIR(1));
+	attroff(COLOR_PAIR(2));
+	attroff(COLOR_PAIR(3));
 }
 
 bool	Sprite::impact(Sprite*& target) {
