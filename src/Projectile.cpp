@@ -20,8 +20,8 @@ Projectile::~Projectile( void ) {
 bool 	Projectile::move( int timeFrameCount) {
 	if (_x > WINWIDTH + SHIPX - 3)
 			return FALSE;
-	if (timeFrameCount % 1 == 0){
-		_x++;
-	} 
+	if (timeFrameCount % 1 ==0){
+	_x++;
+	}
 	return TRUE;
 }

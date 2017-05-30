@@ -93,11 +93,10 @@ void    Window::starSpawn() {
 
 void    Window::shoot(int y) {
 	int i;
-
+//	beep();
 	for (i = 0; i < 10; i++) {
 		if(projectiles[i] == NULL) {
 			projectiles[i] = new Projectile(WSTARTX + 6, y);
-
 			return;
 		}
 	}
@@ -105,21 +104,16 @@ void    Window::shoot(int y) {
 
 void    Window::movesprites(int const keyPress)
 {
-//	starSpawn();
+	starSpawn();
+//	std::cout << keyPress << std::endl;
+	if (keyPress == 10)
+		flash();
 	if (timeFrameCount % 6 == 0)
 		spawn();
 	fighter.move(keyPress, timeFrameCount);
 	if (keyPress == 32) {
 		shoot(fighter.getY());
 	}
-//	for (int i = 0; i < 80; ++i) {
-//		if (starfield[i]) {
-//			if (!starfield[i]->move(timeFrameCount)) {
-//				delete starfield[i];
-//				starfield[i] = NULL;
-//			}
-//		}
-//	}
 	for (int i = 0; i < 10; ++i) {
 		if (projectiles[i]) {
 			if (!projectiles[i]->move(timeFrameCount)) {
@@ -128,7 +122,6 @@ void    Window::movesprites(int const keyPress)
 			}
 		}
 	}
-
 	for (int i = 0; i < 20; ++i) {
 		if (obstacles[i]) {
 			if (!obstacles[i]->move(timeFrameCount)) {
@@ -137,8 +130,6 @@ void    Window::movesprites(int const keyPress)
 			}
 		}
 	}
-
-
 	for (int i = 0; i < 10; ++i) {
 		if (enemies[i]) {
 			if (!enemies[i]->move(timeFrameCount)) {
@@ -156,11 +147,23 @@ void    Window::movesprites(int const keyPress)
 		}
 	}
 
+	for (int i = 0; i < 80; ++i) {
+		if (starfield[i]) {
+			if (!starfield[i]->move(timeFrameCount)) {
+				delete starfield[i];
+				starfield[i] = NULL;
+			}
+		}
+	}
 
 }
 
 void    Window::printScreen() {
 
+	for (int i = 0; i < 80; ++i) {
+		if (starfield[i])
+			starfield[i]->toPrint();  
+	}
 	fighter.toPrint();
 	for (int i = 0; i < 1; ++i) {
 		if (sprites[i])
@@ -181,11 +184,6 @@ void    Window::printScreen() {
 		if (enemies[i])
 			enemies[i]->toPrint();  
 	}
-
-//	for (int i = 0; i < 80; ++i) {
-//		if (starfield[i])
-//			starfield[i]->toPrint();  
-//	}
 }
 
 void    Window::createArray() {
@@ -309,8 +307,8 @@ int     Window::impact() {
 			gettimeofday(&now, NULL);
 
 //			Potential bonus, Disabled due to flickering
-//			if (this->starInit == false)
-//				Window::starSpawn();
+			if (this->starInit == false)
+				Window::starSpawn();
 
 			if (timediff(start, now) >= (1000000 / 30)) {
 				if (maxX < WINWIDTH + 10 || maxY < WINHEIGHT) {

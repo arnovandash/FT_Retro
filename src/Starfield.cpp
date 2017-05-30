@@ -20,7 +20,7 @@ Starfield::~Starfield( void ) {
 bool 	Starfield::move( int timeFrameCount) {
 	if (_x < 7)
 			return FALSE;
-	if (timeFrameCount % 5 == 0){
+	if (timeFrameCount % 10 == 0){
 		_x--;
 	} 
 	return TRUE;
