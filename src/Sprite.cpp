@@ -3,6 +3,7 @@
 #include "Sprite.hpp"
 #include <ncurses.h>
 #include <iostream>
+#include "Window.hpp"
 
 Sprite::Sprite( void ) : _x(10), _y(15), _character(' ') {
 }
@@ -34,17 +35,19 @@ int		Sprite::getY( void ) const {
 }
 
 void	Sprite::toPrint() {
-	char	character[2] = {_character, 0};
-	if (character[0] == '0')
-		attron(COLOR_PAIR(1));
-	if (character[0] == 'E')
-		attron(COLOR_PAIR(2));
-	if (character[0] == '~')
-		attron(COLOR_PAIR(3));
-	mvprintw(this->_y, this->_x, character);
-	attroff(COLOR_PAIR(1));
-	attroff(COLOR_PAIR(2));
-	attroff(COLOR_PAIR(3));
+	if (this->_x >= 0 && this->_x < WINWIDTH && this->_y >= 0 && this->_y < WINHEIGHT) {
+		char	character[2] = {_character, 0};
+		if (character[0] == '0')
+			attron(COLOR_PAIR(1));
+		if (character[0] == 'E')
+			attron(COLOR_PAIR(2));
+		if (character[0] == '~')
+			attron(COLOR_PAIR(3));
+		mvprintw(this->_y, this->_x, character);
+		attroff(COLOR_PAIR(1));
+		attroff(COLOR_PAIR(2));
+		attroff(COLOR_PAIR(3));
+	}
 }
 
 bool	Sprite::impact(Sprite*& target) {
