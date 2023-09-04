@@ -1,5 +1,3 @@
-
-
 #include "Sprite.hpp"
 #include <ncurses.h>
 #include <iostream>

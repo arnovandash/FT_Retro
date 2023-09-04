@@ -1,5 +1,3 @@
-
-
 #include "Starfield.hpp"
 #include "Window.hpp"
 
@@ -19,9 +17,9 @@ Starfield::~Starfield( void ) {
 
 bool 	Starfield::move( int timeFrameCount) {
 	if (_x < 7)
-			return FALSE;
+			return false;
 	if (timeFrameCount % 10 == 0){
 		_x--;
 	} 
-	return TRUE;
+	return true;
 }

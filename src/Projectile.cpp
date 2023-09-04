@@ -1,5 +1,3 @@
-
-
 #include "Projectile.hpp"
 #include "Window.hpp"
 
@@ -19,9 +17,9 @@ Projectile::~Projectile( void ) {
 
 bool 	Projectile::move( int timeFrameCount) {
 	if (_x > WINWIDTH + SHIPX - 3)
-			return FALSE;
+			return false;
 	if (timeFrameCount % 1 ==0){
 	_x++;
 	}
-	return TRUE;
+	return true;
 }

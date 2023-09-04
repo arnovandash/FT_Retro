@@ -1,5 +1,3 @@
-
-
 #include "Enemy.hpp"
 #include "Window.hpp"
 
@@ -33,5 +31,5 @@ bool 	Enemy::move( int timeFrameCount) {
 				_y--;
 		}
 	}
-	return TRUE;
+	return true;
 }

@@ -1,5 +1,3 @@
-
-
 #include "Obstacle.hpp"
 #include "Window.hpp"
 
@@ -19,9 +17,9 @@ Obstacle::~Obstacle( void ) {
 
 bool 	Obstacle::move( int timeFrameCount) {
 	if (_x < 7)
-			return FALSE;
+			return false;
 	if (timeFrameCount % 1 == 0){
 		_x--;
 	} 
-	return TRUE;
+	return true;
 }

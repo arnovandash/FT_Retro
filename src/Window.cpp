@@ -4,7 +4,6 @@
 #include <sys/time.h>
 #include <cstdlib>
 
-
 Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), score(0), lives(5), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
 	// Initialize arrays to NULL
 	for (int i = 0; i < 1; ++i) {
