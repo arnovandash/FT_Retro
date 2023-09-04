@@ -6,6 +6,22 @@
 
 
 Window::Window() : fighter(Ship()), starInit(false), keyPress(ERR), prevKeyPress(ERR), score(0), lives(5), timeFrameCount(0), HEIGHT(WINHEIGHT), WIDTH(WINWIDTH), WSTARTX(SHIPX), WSTARTY(SHIPY) {
+	// Initialize arrays to NULL
+	for (int i = 0; i < 1; ++i) {
+			sprites[i] = NULL;
+	}
+    for (int i = 0; i < MAX_PROJECTILES; ++i) {
+        projectiles[i] = NULL;
+    }
+    for (int i = 0; i < MAX_ENEMIES; ++i) {
+        enemies[i] = NULL;
+    }
+    for (int i = 0; i < MAX_OBSTACLES; ++i) {
+        obstacles[i] = NULL;
+    }
+    for (int i = 0; i < MAX_STARFIELD; ++i) {
+        starfield[i] = NULL;
+    }
 	init();
 }
 
@@ -184,31 +200,13 @@ void    Window::printScreen() {
 	}
 }
 
-void    Window::createArray() {
-
-	for (int i = 0; i < 1; ++i) {
-		if (sprites[i])
-			sprites[i] = NULL;
-	}
-}
-
 void    Window::createProjectiles() {
 
 	for (int i = 0; i < MAX_PROJECTILES; ++i)
 		sprites[i] = new Projectile();
 }
 
-void    Window::createArray2() {
-	for (int i = 0; i < MAX_PROJECTILES; ++i) {
-		if (projectiles[i])
-			projectiles[i] = NULL;
-	}
-}
-
 void	Window::init() {
-
-	createArray();
-	createArray2();
 	initscr();
 
 	start_color();
