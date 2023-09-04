@@ -1,5 +1,3 @@
-
-
 #ifndef WINDOW_HPP
 # define WINDOW_HPP
 
@@ -7,6 +5,11 @@
 #define WINWIDTH 100
 #define SHIPX 5
 #define SHIPY 5
+#define MAX_PROJECTILES 10
+#define MAX_ENEMIES 10
+#define MAX_OBSTACLES 20
+#define MAX_STARFIELD 80
+
 
 #include "Sprite.hpp"
 #include "Ship.hpp"

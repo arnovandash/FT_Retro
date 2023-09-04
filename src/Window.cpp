@@ -1,5 +1,3 @@
-
-
 #include "Window.hpp"
 #include <ncurses.h>
 #include <iostream>
@@ -50,7 +48,7 @@ void	Window::destroyWin() {
 void    Window::spawn() {
 	int i;
 
-	for (i = 0; i < 20; i++) {
+	for (i = 0; i < MAX_OBSTACLES; i++) {
 		if(obstacles[i] == NULL) {
 			obstacles[i] = new Obstacle(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
 			break;
@@ -58,7 +56,7 @@ void    Window::spawn() {
 	}
 	if (timeFrameCount % 15 == 0)
 	{
-		for (i = 0; i < 10; i++) {
+		for (i = 0; i < MAX_ENEMIES; i++) {
 			if(enemies[i] == NULL) {
 				enemies[i] = new Enemy(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
 				break;
@@ -72,7 +70,7 @@ void    Window::starSpawn() {
 	int i;
 	if (this->starInit == false)
 	{
-		for (i = 0; i < 80; i++) {
+		for (i = 0; i < MAX_STARFIELD; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(rand() % WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
 			}
@@ -81,7 +79,7 @@ void    Window::starSpawn() {
 	}
 	else
 	{
-		for (i = 0; i < 80; i++) {
+		for (i = 0; i < MAX_STARFIELD; i++) {
 			if(starfield[i] == NULL) {
 				starfield[i] = new Starfield(WINWIDTH + 2, rand() % (WINHEIGHT - 2) + 6);
 				break;
@@ -94,7 +92,7 @@ void    Window::starSpawn() {
 void    Window::shoot(int y) {
 	int i;
 //	beep();
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < MAX_PROJECTILES; i++) {
 		if(projectiles[i] == NULL) {
 			projectiles[i] = new Projectile(WSTARTX + 6, y);
 			return;
@@ -114,7 +112,7 @@ void    Window::movesprites(int const keyPress)
 	if (keyPress == 32) {
 		shoot(fighter.getY());
 	}
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < MAX_PROJECTILES; ++i) {
 		if (projectiles[i]) {
 			if (!projectiles[i]->move(timeFrameCount)) {
 				delete projectiles[i];
@@ -122,7 +120,7 @@ void    Window::movesprites(int const keyPress)
 			}
 		}
 	}
-	for (int i = 0; i < 20; ++i) {
+	for (int i = 0; i < MAX_OBSTACLES; ++i) {
 		if (obstacles[i]) {
 			if (!obstacles[i]->move(timeFrameCount)) {
 				delete obstacles[i];
@@ -130,7 +128,7 @@ void    Window::movesprites(int const keyPress)
 			}
 		}
 	}
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < MAX_ENEMIES; ++i) {
 		if (enemies[i]) {
 			if (!enemies[i]->move(timeFrameCount)) {
 				delete enemies[i];
@@ -147,7 +145,7 @@ void    Window::movesprites(int const keyPress)
 		}
 	}
 
-	for (int i = 0; i < 80; ++i) {
+	for (int i = 0; i < MAX_STARFIELD; ++i) {
 		if (starfield[i]) {
 			if (!starfield[i]->move(timeFrameCount)) {
 				delete starfield[i];
@@ -160,7 +158,7 @@ void    Window::movesprites(int const keyPress)
 
 void    Window::printScreen() {
 
-	for (int i = 0; i < 80; ++i) {
+	for (int i = 0; i < MAX_STARFIELD; ++i) {
 		if (starfield[i])
 			starfield[i]->toPrint();  
 	}
@@ -170,17 +168,17 @@ void    Window::printScreen() {
 			sprites[i]->toPrint();
 	}
 
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < MAX_PROJECTILES; ++i) {
 		if (projectiles[i])
 			projectiles[i]->toPrint();  
 	}
 
-	for (int i = 0; i < 20; ++i) {
+	for (int i = 0; i < MAX_OBSTACLES; ++i) {
 		if (obstacles[i])
 			obstacles[i]->toPrint();  
 	}
 
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < MAX_ENEMIES; ++i) {
 		if (enemies[i])
 			enemies[i]->toPrint();  
 	}
@@ -196,12 +194,12 @@ void    Window::createArray() {
 
 void    Window::createProjectiles() {
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < MAX_PROJECTILES; ++i)
 		sprites[i] = new Projectile();
 }
 
 void    Window::createArray2() {
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < MAX_PROJECTILES; ++i) {
 		if (projectiles[i])
 			projectiles[i] = NULL;
 	}
@@ -210,8 +208,8 @@ void    Window::createArray2() {
 void	Window::init() {
 
 	createArray();
-	initscr();
 	createArray2();
+	initscr();
 
 	start_color();
 	init_pair(1, COLOR_RED, COLOR_BLACK);
@@ -231,8 +229,8 @@ void	Window::init() {
 }
 
 int     Window::impact() {
-    for (int j = 0; j < 10; ++j) {
-        for (int k = 0; (k < 10 && projectiles[j]) ; ++k) {
+    for (int j = 0; j < MAX_PROJECTILES; ++j) {
+        for (int k = 0; (k < MAX_ENEMIES && projectiles[j]) ; ++k) {
             if (enemies[k] && projectiles[j]->impact(enemies[k])) {
                 delete projectiles[j];
                 projectiles[j] = NULL;
@@ -242,7 +240,7 @@ int     Window::impact() {
 			}
 		}
 	}
-	for (int x = 0; x < 10; ++x) {
+	for (int x = 0; x < MAX_ENEMIES; ++x) {
 		if (enemies[x] && fighter.impact(enemies[x])) {
 			if (lives == 0) {
 				delete enemies[x];
@@ -258,8 +256,8 @@ int     Window::impact() {
 			}
 		}
 
-   for (int j = 0; j < 10; ++j) {
-        for (int k = 0; (k < 20 && projectiles[j]) ; ++k) {
+   for (int j = 0; j < MAX_PROJECTILES; ++j) {
+        for (int k = 0; (k < MAX_OBSTACLES && projectiles[j]) ; ++k) {
             if (obstacles[k] && projectiles[j]->impact(obstacles[k])) {
                 delete projectiles[j];
                 projectiles[j] = NULL;
@@ -269,7 +267,7 @@ int     Window::impact() {
 			}
 		}
 	}
-	for (int x = 0; x < 20; ++x) {
+	for (int x = 0; x < MAX_OBSTACLES; ++x) {
 		if (obstacles[x] && fighter.impact(obstacles[x])) {
 			if (lives == 0) {
 				delete obstacles[x];
